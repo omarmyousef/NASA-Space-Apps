@@ -191,3 +191,45 @@ const TextType = ({
 };
 
 export default TextType;
+
+export function calculateTypingDuration({
+    text,
+    typingSpeed = 50,
+    deletingSpeed = 30,
+    pauseDuration = 2000,
+    initialDelay = 0,
+    variableSpeed,
+    loop = true,
+    reverseMode = false,
+}: Pick<
+    import('./TextType').TextTypeProps,
+    'text' | 'typingSpeed' | 'deletingSpeed' | 'pauseDuration' | 'initialDelay' | 'variableSpeed' | 'loop' | 'reverseMode'
+>) {
+    const textArray = Array.isArray(text) ? text : [text];
+    let totalDuration = initialDelay;
+
+    textArray.forEach(sentence => {
+        const processedText = reverseMode ? sentence.split('').reverse().join('') : sentence;
+        const length = processedText.length;
+
+        // Typing duration
+        let typingDuration = 0;
+        if (variableSpeed) {
+            // Average speed for estimation
+            const avgSpeed = (variableSpeed.min + variableSpeed.max) / 2;
+            typingDuration = length * avgSpeed;
+        } else {
+            typingDuration = length * typingSpeed;
+        }
+
+        // Pause after typing
+        totalDuration += typingDuration + pauseDuration;
+
+        // Deleting duration (if more than one sentence or loop is true)
+        if (textArray.length > 1 || loop) {
+            totalDuration += length * deletingSpeed;
+        }
+    });
+
+    return totalDuration;
+}

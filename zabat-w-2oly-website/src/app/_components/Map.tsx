@@ -1,18 +1,25 @@
 "use client"
 
 import * as React from 'react';
-import { Map as ReactMap, Marker, useMap, MapProvider } from 'react-map-gl/mapbox';
+import { Map as ReactMap, Marker, useMap } from 'react-map-gl/mapbox';
 import Pin from './Pin';
 import 'mapbox-gl/dist/mapbox-gl.css';
 import MarkerPopover from "./MarkerPopover";
 
+export interface markerLocationType {
+    latitude: number;
+    longitude: number;
+}
+
 const Map = () => {
     const { default: map } = useMap();
 
-    const [markerLocation, setMarkerLocation] = React.useState({
+    const [markerLocation, setMarkerLocation] = React.useState<markerLocationType>({
         latitude: 31.233334,
         longitude: 30.033333
     });
+
+    const [flying, setFlying] = React.useState(false);
 
     const handleMapClick = (event: any) => {
         const lng = event.lngLat.lng;
@@ -22,11 +29,19 @@ const Map = () => {
 
         setMarkerLocation({ longitude: lng, latitude: lat });
 
-        map?.flyTo({
-            center: [lng, lat],
-            zoom: 10,
-            speed: 0.3,
-        });
+        if (map) {
+            setFlying(true); // 🚀 start flying
+            map.flyTo({
+                center: [lng, lat],
+                zoom: 10,
+                speed: 0.3,
+            });
+
+            // 👂 Wait for animation end
+            map.once("moveend", () => {
+                setFlying(false);
+            });
+        }
     };
 
     return (
@@ -46,11 +61,12 @@ const Map = () => {
                 longitude={markerLocation.longitude}
                 latitude={markerLocation.latitude}
                 anchor="bottom"
-                onClick={e => {
-                    alert("Marker Clicked")
-                }}
             >
-                <Pin open={true} popoverContent={<MarkerPopover />} />
+                <Pin
+                    open={true}
+                    flying={flying} // 👈 Pass flying state
+                    popoverContent={<MarkerPopover markerLocation={markerLocation} />}
+                />
             </Marker>
         </ReactMap>
     );
