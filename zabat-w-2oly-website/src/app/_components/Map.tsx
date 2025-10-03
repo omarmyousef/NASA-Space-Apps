@@ -4,6 +4,7 @@ import * as React from 'react';
 import { Map as ReactMap, Marker, useMap, MapProvider } from 'react-map-gl/mapbox';
 import Pin from './Pin';
 import 'mapbox-gl/dist/mapbox-gl.css';
+import MarkerPopover from "./MarkerPopover";
 
 const Map = () => {
     const { default: map } = useMap();
@@ -49,9 +50,7 @@ const Map = () => {
                     alert("Marker Clicked")
                 }}
             >
-                <Pin open={true} popoverContent={
-                    <>Hello World</>
-                } />
+                <Pin open={true} popoverContent={<MarkerPopover />} />
             </Marker>
         </ReactMap>
     );
