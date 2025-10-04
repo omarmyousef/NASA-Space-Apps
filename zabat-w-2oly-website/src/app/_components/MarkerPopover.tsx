@@ -62,7 +62,7 @@ const MarkerPopover = ({ markerLocation }: MarkerPopoverProps) => {
     return (
         <div className='flex flex-col'>
             <div className='mt-4 mb-4 text-4xl w-full flex justify-start items-center flex-col'>
-                <div className="relative w-2/3 h-auto aspect-2/1">
+                <div className="relative w-2/3 h-auto aspect-2/1 animate-floating">
                     {["idle", "processing", "informative"].map((imgState) => (
                         <img
                             key={imgState}
@@ -94,11 +94,11 @@ const MarkerPopover = ({ markerLocation }: MarkerPopoverProps) => {
                                         typingSpeed={8}
                                         pauseDuration={32}
                                         showCursor={false}
-                                        className='text-lg mx-6'
+                                        className='text-lg mx-4'
                                     />
                                     // <span className='text-lg mx-6'>{e.content}</span>
                                 ) : (
-                                    <span className='text-lg mx-6'>{e.content}</span>
+                                    <span className='text-lg mx-4'>{e.content}</span>
                                 )}
                             </MessageThread>
                         ))}
@@ -109,6 +109,7 @@ const MarkerPopover = ({ markerLocation }: MarkerPopoverProps) => {
             <Input
                 alt='User Input'
                 placeholder='eg. I want to have a picnic here'
+                dir='auto'
                 onKeyDown={(e) => {
                     if (e.key === "Enter" && e.currentTarget.value.trim() !== "") {
                         sendMessage(e.currentTarget.value);
@@ -119,7 +120,7 @@ const MarkerPopover = ({ markerLocation }: MarkerPopoverProps) => {
                         setTimeout(() => {
                             setState("informative");
                             sendMessage(
-                                "Zy el fol yasta, el mohem, enta 2oltely 3ayez troo7 el ahwa bokra, bas el donya hatmtar, fa fakes ba2a :)",
+                                "Hi Omar, it's very unlikely to rain on November 4th, so you can confidently plan your picnic!",
                                 "system"
                             );
                         }, 1000);
@@ -127,7 +128,7 @@ const MarkerPopover = ({ markerLocation }: MarkerPopoverProps) => {
                         setTimeout(() => {
                             setState("idle");
                         }, calculateTypingDuration({
-                            text: "Zy el fol yasta, el mohem, enta 2oltely 3ayez troo7 el ahwa bokra, bas el donya hatmtar, fa fakes ba2a :)",
+                            text: "Hi Omar, it's very unlikely to rain on November 4th, so you can confidently plan your picnic!",
                             typingSpeed: 8,
                             pauseDuration: 32,
                             deletingSpeed: 8,

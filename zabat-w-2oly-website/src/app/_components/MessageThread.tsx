@@ -29,7 +29,7 @@ const MessageThread = ({ message, className, children, style }: messageThreadPro
             </motion.span>
             <motion.div
                 dir="auto"
-                className={`rounded-xl border-2 border-neutral-600 drop-shadow-lg w-full py-2 flex justify-start items-center ${{ system: "bg-orange-100", user: "bg-neutral-100" }[message.author] || "bg-white"} ${className}`}
+                className={`rounded-lg border-2 border-neutral-600 drop-shadow-lg w-full py-2 flex justify-start items-center ${{ system: "bg-orange-100", user: "bg-neutral-100" }[message.author] || "bg-white"} ${className}`}
                 initial={{ opacity: 0, x: { system: -20, user: 20 }[message.author] }}
                 animate={{ 
                     opacity: 1, 
